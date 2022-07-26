@@ -8,7 +8,7 @@
 
 #include "priority_queue.h"
 
-#define queue_CMP(result, queue, a, b)         \
+#define QUEUE_CMP(result, queue, a, b)         \
   do {                                         \
     result = queue->cmp(a, b);                 \
     if (queue->max_queue) {                    \
@@ -118,14 +118,14 @@ priority_queue_bubble_down(priority_queue *queue, priority_queue_id pos) {
 
     int cmp = -1;
     if (rchild < queue->queue.len) {
-      queue_CMP(cmp, queue,
+      QUEUE_CMP(cmp, queue,
         queue->elements.keys.arr + key_size * queue->queue.arr[lchild],
         queue->elements.keys.arr + key_size * queue->queue.arr[rchild]);
       if (cmp >= 0)
         successor = rchild;
     }
     
-    queue_CMP(cmp, queue,
+    QUEUE_CMP(cmp, queue,
       queue->elements.keys.arr + key_size * queue->queue.arr[pos],
       queue->elements.keys.arr + key_size * queue->queue.arr[successor]);
     if (cmp <= 0)
@@ -143,7 +143,7 @@ priority_queue_bubble_up(priority_queue *queue, priority_queue_id pos) {
     priority_queue_id pos_index = queue->queue.arr[pos];
 
     int cmp;
-    queue_CMP(cmp, queue,
+    QUEUE_CMP(cmp, queue,
       queue->elements.keys.arr + queue->elements.keys.size * par_index,
       queue->elements.keys.arr + queue->elements.keys.size * pos_index);
     if (cmp < 0)
