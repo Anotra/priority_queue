@@ -171,7 +171,7 @@ priority_queue_push(priority_queue *queue, void *key, void *val) {
     tmp = realloc(queue->elements.info, cap * sizeof *queue->elements.info);
     if (!tmp) return 0;
     if (queue->elements.info) {
-      memset(tmp + queue->elements.cap * sizeof *queue->elements.info,
+      memset((char *)tmp + queue->elements.cap * sizeof *queue->elements.info,
              0, (cap - queue->elements.cap) * sizeof *queue->elements.info);
     } else {
       memset(tmp, 0, cap * sizeof *queue->elements.info);
