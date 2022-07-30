@@ -57,7 +57,6 @@ test_min_and_max() {
   return 1;
 }
 
-
 static int
 test_random() {
   priority_queue *q1 = priority_queue_create(
@@ -82,7 +81,6 @@ test_random() {
     return 0;
   return 1;
 }
-
 
 static int
 test_ordering() {
@@ -117,13 +115,37 @@ test_ordering() {
   return 0;
 }
 
-int main(int argc, char *argv[]) {
-  if (strcmp("min_and_max", argv[1]) == 0)
-    return test_min_and_max();
+static int
+test_ids() {
+  priority_queue *q = priority_queue_create(
+    sizeof(int), 0, cmp_int, priority_queue_min);
+  for (int i=0; i<10000; i++)
+    priority_queue_push(q, &i, NULL);
   
-  if (strcmp("random", argv[1]) == 0)
-    return test_random();
+  int to_delete[] = { 10, 20, 30, 40, 50, 60, 70, 80, 90,
+                      100, 200, 300, 400, 500, 600, 700, 800, 900,
+                      1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000 };
 
-  if (strcmp("ordering", argv[1]) == 0)
-    return test_ordering();
+  for (int i=0; i<sizeof to_delete / sizeof *to_delete; i++)
+    priority_queue_del(q, to_delete[i]);
+
+  int key = 0;
+  for (int i=0; i<sizeof to_delete / sizeof *to_delete; i++)
+    if (to_delete[i] != priority_queue_push(q, &key, NULL)) 
+      return 1;
+
+  priority_queue_destroy(q);
+  return 0;
+}
+
+#define ADD_TEST(name)             \
+  if (strcmp(#name, argv[1]) == 0) \
+    return test_##name()
+
+int main(int argc, char *argv[]) {
+  ADD_TEST(min_and_max);
+  ADD_TEST(random);
+  ADD_TEST(ordering);
+  ADD_TEST(ids);
+  return 1;
 }
