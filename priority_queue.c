@@ -63,7 +63,7 @@ priority_queue_create(
     queue->elements.max = UINT32_MAX - 2;
     queue->cmp = cmp;
     queue->queue.len = 1;
-    queue->queue.arr = calloc((queue->queue.cap = 0x400), sizeof *queue->queue.arr);
+    queue->queue.arr = calloc((queue->queue.cap = 0x10), sizeof *queue->queue.arr);
     if (queue->queue.arr)
       return queue;
     free(queue);
